@@ -1,25 +1,25 @@
 {
-  "nextMeeting": "2025-02-18",
+  "nextMeeting": "2025-07-08",
   "source": "ASX RBA Rate Tracker",
-  "lastUpdate": "2025-01-15T09:30:00+11:00",
+  "lastUpdate": "2025-07-04T16:00:00+10:00",
   "probabilities": [
     {
-      "outcome": "Hold (4.35%)",
-      "rate": 4.35,
-      "probability": 45,
-      "impliedOdds": 2.22
-    },
-    {
-      "outcome": "-0.25% (4.10%)",
-      "rate": 4.10,
-      "probability": 40,
-      "impliedOdds": 2.50
-    },
-    {
-      "outcome": "-0.50% (3.85%)",
+      "outcome": "Hold (3.85%)",
       "rate": 3.85,
-      "probability": 15,
-      "impliedOdds": 6.67
+      "probability": 3,
+      "impliedOdds": 33.33
+    },
+    {
+      "outcome": "-0.25% (3.60%)",
+      "rate": 3.60,
+      "probability": 97,
+      "impliedOdds": 1.03
+    },
+    {
+      "outcome": "-0.50% (3.35%)",
+      "rate": 3.35,
+      "probability": 0,
+      "impliedOdds": 0
     }
   ]
 }
