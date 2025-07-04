@@ -1,0 +1,35 @@
+{
+  "name": "rba-market-odds-dashboard",
+  "version": "1.0.0",
+  "description": "Real-time dashboard for RBA interest rate market expectations",
+  "main": "index.html",
+  "scripts": {
+    "dev": "npx live-server --port=3000",
+    "build": "npm run update-data",
+    "update-data": "cd scripts && python scraper.py",
+    "serve": "npx http-server -p 8080",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "rba",
+    "interest-rates",
+    "dashboard",
+    "finance",
+    "australia",
+    "market-odds"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
+  "devDependencies": {
+    "live-server": "^1.2.2",
+    "http-server": "^14.1.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/[your-username]/rba-market-odds-dashboard.git"
+  },
+  "bugs": {
+    "url": "https://github.com/[your-username]/rba-market-odds-dashboard/issues"
+  },
+  "homepage": "https://github.com/[your-username]/rba-market-odds-dashboard#readme"
+}
