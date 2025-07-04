@@ -1,0 +1,25 @@
+{
+  "nextMeeting": "2025-02-18",
+  "source": "ASX RBA Rate Tracker",
+  "lastUpdate": "2025-01-15T09:30:00+11:00",
+  "probabilities": [
+    {
+      "outcome": "Hold (4.35%)",
+      "rate": 4.35,
+      "probability": 45,
+      "impliedOdds": 2.22
+    },
+    {
+      "outcome": "-0.25% (4.10%)",
+      "rate": 4.10,
+      "probability": 40,
+      "impliedOdds": 2.50
+    },
+    {
+      "outcome": "-0.50% (3.85%)",
+      "rate": 3.85,
+      "probability": 15,
+      "impliedOdds": 6.67
+    }
+  ]
+}
