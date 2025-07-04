@@ -12,4 +12,71 @@
     <!-- External Dependencies -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment-timezone/0.5
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment-timezone/0.5.43/moment-timezone-with-data.min.js"></script>
+    
+    <!-- Local Styles -->
+    <link rel="stylesheet" href="css/styles.css">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='0.9em' font-size='90'>📊</text></svg>">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>RBA Market Odds Dashboard</h1>
+            <p class="subtitle">Real-time market expectations for Reserve Bank of Australia rate decisions</p>
+        </header>
+        
+        <div class="countdown" id="countdown">
+            <h2>Next RBA Meeting</h2>
+            <div class="time-units" id="timer">
+                <div class="time-unit">
+                    <div class="time-value">--</div>
+                    <div class="time-label">Days</div>
+                </div>
+                <div class="time-unit">
+                    <div class="time-value">--</div>
+                    <div class="time-label">Hours</div>
+                </div>
+                <div class="time-unit">
+                    <div class="time-value">--</div>
+                    <div class="time-label">Minutes</div>
+                </div>
+                <div class="time-unit">
+                    <div class="time-value">--</div>
+                    <div class="time-label">Seconds</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="grid grid-2">
+            <div class="card">
+                <h2><span class="icon">📊</span> Market Probabilities</h2>
+                <div id="marketOdds">
+                    <div class="loading">Loading market data...</div>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h2><span class="icon">📈</span> Last Rate Change</h2>
+                <div id="lastChange">
+                    <div class="loading">Loading rate history...</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card">
+            <h2><span class="icon">📉</span> Cash Rate History (5 Years)</h2>
+            <div class="chart-container">
+                <canvas id="rateChart"></canvas>
+            </div>
+            <div id="chartStatus" class="loading">Loading historical data...</div>
+        </div>
+    </div>
+    
+    <!-- Local Scripts -->
+    <script src="js/countdown.js"></script>
+    <script src="js/chart.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>
