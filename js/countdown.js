@@ -16,46 +16,39 @@ function updateCountdown() {
         if (!timerElement) return; // Exit if elements not ready
     }
     
-    const now = moment.tz();
-    const meetings = window.dashboardState?.meetings?.dates || [];
+    const now = moment.tz('Australia/Sydney');
+    
+    // Hardcoded meeting dates for reliability
+    const meetingDates = [
+        '2025-07-08T14:30:00+10:00',
+        '2025-08-12T14:30:00+10:00',
+        '2025-09-30T14:30:00+10:00',
+        '2025-11-18T14:30:00+11:00',
+        '2025-12-16T14:30:00+11:00',
+        '2026-02-17T14:30:00+11:00',
+        '2026-03-31T14:30:00+11:00',
+        '2026-05-19T14:30:00+10:00'
+    ];
     
     let nextMeeting = null;
     
     // Find the next future meeting
-    for (const dateStr of meetings) {
-        const meetingDate = moment.tz(dateStr);
+    for (const dateStr of meetingDates) {
+        const meetingDate = moment.tz(dateStr, 'Australia/Sydney');
         if (meetingDate.isAfter(now)) {
             nextMeeting = meetingDate;
             break;
         }
     }
     
-    // If no meetings in data, use fallback dates
-    if (!nextMeeting && meetings.length === 0) {
-        const fallbackDates = [
-            '2025-07-08T14:30:00+10:00',
-            '2025-08-12T14:30:00+10:00',
-            '2025-09-30T14:30:00+10:00',
-            '2025-11-18T14:30:00+11:00',
-            '2025-12-16T14:30:00+11:00',
-            '2026-02-17T14:30:00+11:00',
-            '2026-03-31T14:30:00+11:00',
-            '2026-05-19T14:30:00+10:00'
-        ];
-        
-        for (const dateStr of fallbackDates) {
-            const meetingDate = moment.tz(dateStr);
-            if (meetingDate.isAfter(now)) {
-                nextMeeting = meetingDate;
-                break;
-            }
-        }
-    }
-    
-    // Always have a next meeting - if all dates passed, show message
     if (!nextMeeting) {
         if (timerElement) {
-            timerElement.innerHTML = '<div class="time-unit"><div class="time-value">--</div><div class="time-label">Meeting dates need updating</div></div>';
+            timerElement.innerHTML = `
+                <div class="time-unit">
+                    <div class="time-value">--</div>
+                    <div class="time-label">No meetings scheduled</div>
+                </div>
+            `;
         }
         return;
     }
@@ -63,10 +56,9 @@ function updateCountdown() {
     // Calculate time remaining
     const duration = moment.duration(nextMeeting.diff(now));
     
-    // Don't update if duration is negative (meeting passed)
-    if (duration.asSeconds() < 0) {
-        // Move to next meeting
-        updateCountdown();
+    if (duration.asSeconds() <= 0) {
+        // Meeting has passed, find next one
+        setTimeout(updateCountdown, 1000);
         return;
     }
     
@@ -75,7 +67,7 @@ function updateCountdown() {
     const minutes = duration.minutes();
     const seconds = duration.seconds();
     
-    // Only update DOM if values changed
+    // Update timer display
     const newContent = `
         <div class="time-unit">
             <div class="time-value">${days}</div>
@@ -95,7 +87,7 @@ function updateCountdown() {
         </div>
     `;
     
-    if (timerElement && timerElement.innerHTML !== newContent) {
+    if (timerElement) {
         timerElement.innerHTML = newContent;
     }
     
@@ -103,7 +95,7 @@ function updateCountdown() {
     const timezone = nextMeeting.format('z');
     const headerText = `Next RBA Meeting: ${nextMeeting.format('D MMMM YYYY, h:mm A')} ${timezone}`;
     
-    if (countdownHeader && countdownHeader.innerHTML !== headerText) {
+    if (countdownHeader) {
         countdownHeader.innerHTML = headerText;
     }
 }
@@ -134,8 +126,7 @@ function stopCountdown() {
 
 // Auto-start on page load
 document.addEventListener('DOMContentLoaded', () => {
-    // Wait a moment for data to load, then start
-    setTimeout(startCountdown, 100);
+    startCountdown();
 });
 
 // Export for use in other modules
