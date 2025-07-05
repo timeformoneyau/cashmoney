@@ -55,7 +55,31 @@ function displayMarketOdds() {
         return;
     }
     
+    // Add inline styles for probability bars
     let html = `
+        <style>
+            .prob-bar-container {
+                width: 100%;
+                height: 24px;
+                background: #334155;
+                border-radius: 12px;
+                overflow: hidden;
+                margin-top: 8px;
+            }
+            .prob-bar-fill {
+                height: 100%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: white;
+                font-size: 0.85rem;
+                font-weight: 500;
+                transition: width 0.5s ease;
+            }
+            .prob-cell {
+                min-width: 250px;
+            }
+        </style>
         <table>
             <thead>
                 <tr>
@@ -69,19 +93,20 @@ function displayMarketOdds() {
     
     state.marketData.probabilities.forEach(item => {
         const odds = item.probability > 0 ? (100 / item.probability).toFixed(2) : '-';
+        const barColor = getProbabilityColor(item.probability);
+        
         html += `
             <tr>
                 <td>${item.outcome}</td>
-                <td>
-                    <div style="display: flex; align-items: center; gap: 10px;">
-                        <span style="font-weight: 600; min-width: 40px;">${item.probability}%</span>
-                        <div class="probability-bar" style="flex: 1;">
-                            <div class="probability-fill" style="width: ${item.probability}%; background: ${getProbabilityColor(item.probability)};">
-                            </div>
+                <td class="prob-cell">
+                    <div style="font-weight: 600; font-size: 1.1rem; margin-bottom: 4px;">${item.probability}%</div>
+                    <div class="prob-bar-container">
+                        <div class="prob-bar-fill" style="width: ${item.probability}%; background: ${barColor};">
+                            ${item.probability}%
                         </div>
                     </div>
                 </td>
-                <td class="odds-value">${odds}</td>
+                <td class="odds-value" style="font-size: 1.2rem; font-weight: 700; color: #60a5fa;">${odds}</td>
             </tr>
         `;
     });
@@ -89,7 +114,7 @@ function displayMarketOdds() {
     html += `
             </tbody>
         </table>
-        <div class="update-time">
+        <div class="update-time" style="margin-top: 16px; text-align: right; color: #94a3b8; font-size: 0.9rem;">
             Last updated: ${moment(state.marketData.lastUpdate).format('D MMM YYYY, h:mm A')}
         </div>
     `;
@@ -99,11 +124,11 @@ function displayMarketOdds() {
 
 // Helper function to get color based on probability
 function getProbabilityColor(probability) {
-    if (probability >= 80) return 'linear-gradient(135deg, #10b981 0%, #059669 100%)';
-    if (probability >= 60) return 'linear-gradient(135deg, #60a5fa 0%, #3b82f6 100%)';
-    if (probability >= 40) return 'linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%)';
-    if (probability >= 20) return 'linear-gradient(135deg, #f87171 0%, #ef4444 100%)';
-    return 'linear-gradient(135deg, #94a3b8 0%, #64748b 100%)';
+    if (probability >= 80) return 'linear-gradient(90deg, #10b981, #059669)';
+    if (probability >= 60) return 'linear-gradient(90deg, #60a5fa, #3b82f6)';
+    if (probability >= 40) return 'linear-gradient(90deg, #fbbf24, #f59e0b)';
+    if (probability >= 20) return 'linear-gradient(90deg, #f87171, #ef4444)';
+    return 'linear-gradient(90deg, #94a3b8, #64748b)';
 }
 
 // Display last rate change
