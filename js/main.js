@@ -73,10 +73,11 @@ function displayMarketOdds() {
             <tr>
                 <td>${item.outcome}</td>
                 <td>
-                    ${item.probability}%
-                    <div class="probability-bar">
-                        <div class="probability-fill" style="width: ${item.probability}%">
-                            ${item.probability}%
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <span style="font-weight: 600; min-width: 40px;">${item.probability}%</span>
+                        <div class="probability-bar" style="flex: 1;">
+                            <div class="probability-fill" style="width: ${item.probability}%; background: ${getProbabilityColor(item.probability)};">
+                            </div>
                         </div>
                     </div>
                 </td>
@@ -94,6 +95,15 @@ function displayMarketOdds() {
     `;
     
     container.innerHTML = html;
+}
+
+// Helper function to get color based on probability
+function getProbabilityColor(probability) {
+    if (probability >= 80) return 'linear-gradient(135deg, #10b981 0%, #059669 100%)';
+    if (probability >= 60) return 'linear-gradient(135deg, #60a5fa 0%, #3b82f6 100%)';
+    if (probability >= 40) return 'linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%)';
+    if (probability >= 20) return 'linear-gradient(135deg, #f87171 0%, #ef4444 100%)';
+    return 'linear-gradient(135deg, #94a3b8 0%, #64748b 100%)';
 }
 
 // Display last rate change
