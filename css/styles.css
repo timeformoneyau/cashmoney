@@ -1,446 +1,83 @@
-/* RBA Market Odds Dashboard - Main Styles */
-
-:root {
-    /* Color palette */
-    --primary-color: #60a5fa;
-    --secondary-color: #a78bfa;
-    --success-color: #4ade80;
-    --danger-color: #f87171;
-    --warning-color: #fbbf24;
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Real-time dashboard showing RBA interest rate market expectations and historical data">
+    <meta name="keywords" content="RBA, Reserve Bank Australia, interest rates, market odds, ASX">
+    <meta name="author" content="Your Name">
     
-    /* Background colors */
-    --bg-primary: #0f172a;
-    --bg-secondary: #1e293b;
-    --bg-tertiary: #334155;
+    <title>RBA Market Odds Dashboard</title>
     
-    /* Text colors */
-    --text-primary: #e2e8f0;
-    --text-secondary: #94a3b8;
-    --text-muted: #64748b;
+    <!-- External Dependencies -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment-timezone/0.5.43/moment-timezone-with-data.min.js"></script>
     
-    /* Spacing */
-    --spacing-xs: 4px;
-    --spacing-sm: 8px;
-    --spacing-md: 16px;
-    --spacing-lg: 24px;
-    --spacing-xl: 32px;
+    <!-- Local Styles -->
+    <link rel="stylesheet" href="css/styles.css">
     
-    /* Border radius */
-    --radius-sm: 4px;
-    --radius-md: 8px;
-    --radius-lg: 12px;
-    --radius-xl: 16px;
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='0.9em' font-size='90'>📊</text></svg>">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>RBA Market Odds Dashboard</h1>
+            <p class="subtitle">Real-time market expectations for Reserve Bank of Australia rate decisions</p>
+        </header>
+        
+        <div class="countdown" id="countdown">
+            <h2>Next RBA Meeting</h2>
+            <div class="time-units" id="timer">
+                <div class="time-unit">
+                    <div class="time-value">--</div>
+                    <div class="time-label">Days</div>
+                </div>
+                <div class="time-unit">
+                    <div class="time-value">--</div>
+                    <div class="time-label">Hours</div>
+                </div>
+                <div class="time-unit">
+                    <div class="time-value">--</div>
+                    <div class="time-label">Minutes</div>
+                </div>
+                <div class="time-unit">
+                    <div class="time-value">--</div>
+                    <div class="time-label">Seconds</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="grid grid-2">
+            <div class="card">
+                <h2><span class="icon">📊</span> Market Probabilities</h2>
+                <div id="marketOdds">
+                    <div class="loading">Loading market data...</div>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h2><span class="icon">📈</span> Last Rate Change</h2>
+                <div id="lastChange">
+                    <div class="loading">Loading rate history...</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card">
+            <h2><span class="icon">📉</span> Cash Rate History (5 Years)</h2>
+            <div class="chart-container">
+                <canvas id="rateChart"></canvas>
+            </div>
+            <div id="chartStatus" class="loading">Loading historical data...</div>
+        </div>
+    </div>
     
-    /* Transitions */
-    --transition-fast: 0.2s ease;
-    --transition-normal: 0.3s ease;
-    --transition-slow: 0.5s ease;
-}
-
-/* Reset and base styles */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-html {
-    font-size: 16px;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-}
-
-body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-    background: var(--bg-primary);
-    color: var(--text-primary);
-    line-height: 1.6;
-    min-height: 100vh;
-}
-
-/* Container and layout */
-.container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: var(--spacing-lg);
-}
-
-/* Header styles */
-header {
-    text-align: center;
-    margin-bottom: var(--spacing-xl);
-    padding: var(--spacing-xl) var(--spacing-lg);
-    background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-tertiary) 100%);
-    border-radius: var(--radius-xl);
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-    position: relative;
-    overflow: hidden;
-}
-
-header::before {
-    content: '';
-    position: absolute;
-    top: -50%;
-    right: -50%;
-    width: 200%;
-    height: 200%;
-    background: radial-gradient(circle, var(--primary-color) 0%, transparent 70%);
-    opacity: 0.05;
-    animation: rotate 30s linear infinite;
-}
-
-@keyframes rotate {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
-}
-
-h1 {
-    font-size: clamp(2rem, 5vw, 2.5rem);
-    font-weight: 700;
-    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    margin-bottom: var(--spacing-sm);
-    position: relative;
-    z-index: 1;
-}
-
-.subtitle {
-    color: var(--text-secondary);
-    font-size: 1.1rem;
-    position: relative;
-    z-index: 1;
-}
-
-/* Grid system */
-.grid {
-    display: grid;
-    gap: var(--spacing-lg);
-    margin-bottom: var(--spacing-lg);
-}
-
-.grid-2 {
-    grid-template-columns: 1fr;
-}
-
-@media (min-width: 768px) {
-    .grid-2 {
-        grid-template-columns: repeat(2, 1fr);
-    }
-}
-
-/* Card component */
-.card {
-    background: var(--bg-secondary);
-    border-radius: var(--radius-lg);
-    padding: var(--spacing-lg);
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    border: 1px solid var(--bg-tertiary);
-    transition: transform var(--transition-fast), box-shadow var(--transition-fast);
-    position: relative;
-    overflow: hidden;
-}
-
-.card::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 2px;
-    background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
-    transform: scaleX(0);
-    transition: transform var(--transition-normal);
-}
-
-.card:hover::before {
-    transform: scaleX(1);
-}
-
-.card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-}
-
-.card h2 {
-    font-size: 1.5rem;
-    margin-bottom: var(--spacing-md);
-    color: var(--text-primary);
-    display: flex;
-    align-items: center;
-    gap: var(--spacing-sm);
-}
-
-/* Icon styles */
-.icon {
-    width: 24px;
-    height: 24px;
-    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
-    border-radius: 6px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 14px;
-    flex-shrink: 0;
-}
-
-/* Countdown timer */
-.countdown {
-    text-align: center;
-    padding: var(--spacing-xl);
-    background: linear-gradient(135deg, #312e81 0%, #1e3a8a 100%);
-    border-radius: var(--radius-xl);
-    margin-bottom: var(--spacing-lg);
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-    position: relative;
-    overflow: hidden;
-}
-
-.countdown::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: url('data:image/svg+xml,<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"><defs><pattern id="grid" width="50" height="50" patternUnits="userSpaceOnUse"><path d="M 50 0 L 0 0 0 50" fill="none" stroke="white" stroke-width="0.5" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
-    opacity: 0.1;
-}
-
-.countdown h2 {
-    font-size: 1.3rem;
-    margin-bottom: var(--spacing-lg);
-    color: #c7d2fe;
-    position: relative;
-    z-index: 1;
-}
-
-.time-units {
-    display: flex;
-    justify-content: center;
-    gap: var(--spacing-lg);
-    flex-wrap: wrap;
-    position: relative;
-    z-index: 1;
-}
-
-.time-unit {
-    text-align: center;
-    background: rgba(255, 255, 255, 0.1);
-    padding: var(--spacing-md) var(--spacing-lg);
-    border-radius: var(--radius-lg);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    min-width: 80px;
-    transition: transform var(--transition-fast), background var(--transition-fast);
-}
-
-.time-unit:hover {
-    transform: translateY(-2px);
-    background: rgba(255, 255, 255, 0.15);
-}
-
-.time-value {
-    font-size: 2.5rem;
-    font-weight: 700;
-    color: var(--warning-color);
-    line-height: 1;
-    font-variant-numeric: tabular-nums;
-}
-
-.time-label {
-    font-size: 0.9rem;
-    color: #c7d2fe;
-    margin-top: var(--spacing-xs);
-    text-transform: uppercase;
-    letter-spacing: 1px;
-}
-
-/* Table styles */
-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: var(--spacing-md);
-}
-
-th, td {
-    padding: var(--spacing-md);
-    text-align: left;
-    border-bottom: 1px solid var(--bg-tertiary);
-}
-
-th {
-    background: var(--bg-primary);
-    color: var(--text-secondary);
-    font-weight: 600;
-    font-size: 0.9rem;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-}
-
-tr {
-    transition: background var(--transition-fast);
-}
-
-tr:hover {
-    background: rgba(99, 102, 241, 0.1);
-}
-
-.odds-value {
-    font-weight: 600;
-    color: var(--primary-color);
-    font-size: 1.1rem;
-}
-
-/* Probability bar */
-.probability-bar {
-    height: 24px;
-    background: var(--bg-tertiary);
-    border-radius: var(--radius-sm);
-    overflow: hidden;
-    margin-top: var(--spacing-sm);
-    position: relative;
-}
-
-.probability-fill {
-    height: 100%;
-    background: linear-gradient(90deg, var(--primary-color) 0%, var(--secondary-color) 100%);
-    transition: width var(--transition-slow);
-    display: flex;
-    align-items: center;
-    padding: 0 var(--spacing-sm);
-    color: white;
-    font-size: 0.85rem;
-    font-weight: 500;
-}
-
-/* Last change display */
-.last-change {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: var(--spacing-lg);
-    background: rgba(99, 102, 241, 0.1);
-    border-radius: var(--radius-md);
-    border: 1px solid rgba(99, 102, 241, 0.3);
-}
-
-.change-amount {
-    font-size: 2rem;
-    font-weight: 700;
-    display: flex;
-    align-items: center;
-}
-
-.change-amount.positive {
-    color: var(--danger-color);
-}
-
-.change-amount.negative {
-    color: var(--success-color);
-}
-
-.change-amount::after {
-    content: '';
-    width: 0;
-    height: 0;
-    border-style: solid;
-    margin-left: var(--spacing-sm);
-}
-
-.change-amount.positive::after {
-    border-width: 0 8px 12px 8px;
-    border-color: transparent transparent var(--danger-color) transparent;
-}
-
-.change-amount.negative::after {
-    border-width: 12px 8px 0 8px;
-    border-color: var(--success-color) transparent transparent transparent;
-}
-
-/* Chart container */
-.chart-container {
-    position: relative;
-    height: 300px;
-    margin-top: var(--spacing-lg);
-}
-
-/* Utility classes */
-.loading {
-    text-align: center;
-    padding: var(--spacing-lg);
-    color: var(--text-secondary);
-}
-
-.error {
-    background: rgba(239, 68, 68, 0.1);
-    border: 1px solid #ef4444;
-    color: #fca5a5;
-    padding: var(--spacing-md);
-    border-radius: var(--radius-md);
-    margin-top: var(--spacing-md);
-}
-
-.update-time {
-    font-size: 0.85rem;
-    color: var(--text-muted);
-    margin-top: var(--spacing-md);
-    text-align: right;
-}
-
-/* Animations */
-@keyframes pulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.5; }
-}
-
-.updating {
-    animation: pulse 1.5s ease-in-out infinite;
-}
-
-/* Responsive adjustments */
-@media (max-width: 768px) {
-    .container {
-        padding: var(--spacing-md);
-    }
-    
-    .time-units {
-        gap: var(--spacing-md);
-    }
-    
-    .time-unit {
-        min-width: 70px;
-        padding: var(--spacing-sm) var(--spacing-md);
-    }
-    
-    .time-value {
-        font-size: 2rem;
-    }
-    
-    .last-change {
-        flex-direction: column;
-        gap: var(--spacing-md);
-        text-align: center;
-    }
-}
-
-/* Dark mode adjustments */
-@media (prefers-color-scheme: light) {
-    :root {
-        --bg-primary: #f8fafc;
-        --bg-secondary: #ffffff;
-        --bg-tertiary: #e2e8f0;
-        --text-primary: #0f172a;
-        --text-secondary: #475569;
-        --text-muted: #94a3b8;
-    }
-    
-    .card {
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-    }
-    
-    header {
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    }
-}
+    <!-- Local Scripts -->
+    <script src="js/countdown.js"></script>
+    <script src="js/chart.js"></script>
+    <script src="js/asx-fetcher.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>
