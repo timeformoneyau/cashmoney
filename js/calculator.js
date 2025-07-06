@@ -135,13 +135,19 @@ function displayResults(results, loanAmount) {
     html += `
         </div>
         
-        <div class="total-savings-section">
-            <div class="total-savings-title">Maximum Total Savings (0.50% cut)</div>
-            <div class="total-savings-amount">${formatCurrency(results[2].totalSaving)}</div>
-            <div class="total-avocados">
-                That's ${formatNumber(results[2].totalAvocados)} avocado toasts over 30 years! 🥑
+        ${results[2].monthlySaving > 0 ? `
+            <div class="avocado-graph-section">
+                <h3 style="font-size: 1.125rem; font-weight: 700; color: var(--text-heading); margin-bottom: var(--spacing-md); text-align: center;">
+                    Annual Avocado Toast Savings (0.50% cut)
+                </h3>
+                <div class="avocado-graph">
+                    ${generateAvocadoGraph(results[2].monthlySaving)}
+                </div>
+                <p style="text-align: center; color: var(--text-muted); font-size: 0.875rem; margin-top: var(--spacing-sm);">
+                    Each 🥑 = 10 avocado toasts
+                </p>
             </div>
-        </div>
+        ` : ''}
     `;
     
     container.innerHTML = html;
@@ -157,6 +163,30 @@ function displayResults(results, loanAmount) {
             card.style.transform = 'translateY(0)';
         }, index * 100);
     });
+}
+
+// Generate avocado graph
+function generateAvocadoGraph(monthlySaving) {
+    const yearlyAvocados = (monthlySaving * 12) / AVOCADO_TOAST_PRICE;
+    const avocadoIcons = Math.floor(yearlyAvocados / 10);
+    const remainder = Math.floor(yearlyAvocados % 10);
+    
+    let graph = '<div class="avocado-icons">';
+    
+    // Add full avocado icons (each represents 10 toasts)
+    for (let i = 0; i < avocadoIcons; i++) {
+        graph += '<span class="avocado-icon">🥑</span>';
+    }
+    
+    // Add partial indicator if there's a remainder
+    if (remainder > 0) {
+        graph += `<span class="avocado-partial">+${remainder}</span>`;
+    }
+    
+    graph += '</div>';
+    graph += `<div class="avocado-total">${Math.floor(yearlyAvocados)} avocado toasts per year!</div>`;
+    
+    return graph;
 }
 
 // Initialize calculator
