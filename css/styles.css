@@ -4,39 +4,45 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 
 :root {
-    /* Professional Color Palette */
+    /* Brunch-inspired Color Palette */
     /* Backgrounds */
-    --bg-main: #F9FAFB;        /* Soft white for page */
-    --bg-card: #FFFFFF;        /* Pure white for sections */
-    --bg-border: #E5E7EB;      /* Light gray for dividers */
+    --bg-main: #FAF9F7;        /* Latte cream */
+    --bg-card: #FFFFFF;        /* Pure white */
+    --bg-border: #E8E3DD;      /* Light beige */
     
-    /* Primary Accent (Blue) */
-    --accent-primary: #2563EB;  /* Vibrant blue for buttons, active elements */
-    --accent-deep: #1E3A8A;     /* Strong navy for headers */
+    /* Primary Accent (Sage Green) */
+    --accent-primary: #7C9070;  /* Sage green */
+    --accent-deep: #5A6B52;     /* Deep sage */
     
-    /* Secondary Accent (Green/Teal) */
-    --accent-green: #10B981;    /* Fresh green for positive values */
-    --accent-green-dark: #059669;
+    /* Secondary Accent (Avocado) */
+    --accent-green: #8BAA62;    /* Avocado green */
+    --accent-green-dark: #6B8A4A;
+    
+    /* Tertiary (Soft Orange) */
+    --accent-orange: #E89B5C;   /* Soft orange */
+    --accent-beige: #D4C5B9;   /* Latte beige */
     
     /* Text Colors */
-    --text-heading: #111827;    /* Almost-black for headings */
-    --text-body: #374151;       /* Dark gray for body text */
-    --text-muted: #6B7280;      /* Light gray for labels */
+    --text-heading: #2C2C2C;    /* Charcoal */
+    --text-body: #4A4A4A;       /* Dark gray */
+    --text-muted: #7A7A7A;      /* Light gray */
     
     /* Probability Bars */
-    --bar-fill: #3B82F6;
-    --bar-hover: #2563EB;
+    --bar-fill: #7C9070;
+    --bar-hover: #5A6B52;
     --bar-label: #FFFFFF;
     
-    /* Rate Move Colors */
-    --rate-cut: #DC2626;        /* Red for cuts */
-    --rate-hold: #9CA3AF;       /* Gray for holds */
-    --rate-hike: #16A34A;       /* Green for hikes */
+    /* Rate Move Colors with Emojis */
+    --rate-cut: #8BAA62;        /* Green for cuts */
+    --rate-hold: #D4C5B9;       /* Beige for holds */
+    --rate-hike: #E89B5C;       /* Orange for hikes */
     
-    /* Shadows */
-    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05);
-    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.07);
-    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    /* Shadows for 3D effect */
+    --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.08);
+    --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.12);
+    --shadow-lg: 0 8px 16px rgba(0, 0, 0, 0.15);
+    --shadow-3d: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08);
+    --shadow-3d-hover: 0 6px 12px rgba(0, 0, 0, 0.15), 0 2px 4px rgba(0, 0, 0, 0.1);
     
     /* Spacing */
     --spacing-xs: 0.5rem;
@@ -69,8 +75,8 @@ html {
 
 body {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
-    background-color: var(--bg-main);
-    color: var(--text-body);
+    background-color: var(--bg-main);    /* Use the soft white variable */
+    color: var(--text-body);             /* Use the text color variable */
     line-height: 1.6;
     min-height: 100vh;
 }
@@ -162,7 +168,7 @@ h1 {
 
 /* Countdown timer */
 .countdown {
-    background: linear-gradient(135deg, var(--accent-deep), var(--accent-primary));
+    background: linear-gradient(135deg, var(--accent-primary), var(--accent-green));
     color: white;
     padding: var(--spacing-xl);
     border-radius: var(--radius-lg);
@@ -177,6 +183,7 @@ h1 {
     margin-bottom: var(--spacing-lg);
     color: white;
     opacity: 0.95;
+    font-style: italic;
 }
 
 .time-units {
@@ -305,6 +312,12 @@ tr:last-child td {
     border-radius: var(--radius-sm);
 }
 
+.rate-emoji {
+    font-size: 1.5rem;
+    margin-right: var(--spacing-sm);
+    vertical-align: middle;
+}
+
 .rate-indicator {
     font-size: 1.25rem;
     margin-right: var(--spacing-sm);
@@ -328,11 +341,13 @@ tr:last-child td {
     display: flex;
     align-items: center;
     gap: var(--spacing-xs);
+    font-size: 1rem;
 }
 
 .rate-change {
     font-weight: 600;
     color: var(--text-heading);
+    font-size: 1rem;
 }
 
 .rate-date {
@@ -523,7 +538,7 @@ footer a:hover {
 
 .calculate-btn {
     padding: var(--spacing-sm) var(--spacing-lg);
-    background-color: var(--accent-primary);
+    background: linear-gradient(180deg, var(--accent-primary) 0%, var(--accent-deep) 100%);
     color: white;
     border: none;
     border-radius: var(--radius-md);
@@ -532,16 +547,19 @@ footer a:hover {
     cursor: pointer;
     transition: var(--transition);
     min-width: 150px;
+    box-shadow: 0 4px 0 var(--accent-deep), var(--shadow-3d);
+    transform: translateY(0);
+    position: relative;
 }
 
 .calculate-btn:hover {
-    background-color: var(--accent-deep);
-    transform: translateY(-1px);
-    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 0 var(--accent-deep), var(--shadow-3d-hover);
 }
 
 .calculate-btn:active {
-    transform: translateY(0);
+    transform: translateY(2px);
+    box-shadow: 0 2px 0 var(--accent-deep), 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 /* Calculator Results */
@@ -667,4 +685,61 @@ footer a:hover {
 .total-avocados {
     font-size: 1rem;
     color: var(--text-muted);
+}
+
+/* Avocado Graph Styles */
+.avocado-graph-section {
+    background-color: var(--bg-main);
+    border-radius: var(--radius-md);
+    padding: var(--spacing-lg);
+    margin-top: var(--spacing-lg);
+    border: 2px solid var(--accent-green);
+}
+
+.avocado-graph {
+    text-align: center;
+    margin: var(--spacing-lg) 0;
+}
+
+.avocado-icons {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--spacing-sm);
+    margin-bottom: var(--spacing-md);
+}
+
+.avocado-icon {
+    font-size: 2.5rem;
+    display: inline-block;
+    animation: bounceIn 0.5s ease-out;
+}
+
+.avocado-partial {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--accent-green);
+    display: inline-flex;
+    align-items: center;
+    margin-left: var(--spacing-sm);
+}
+
+.avocado-total {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--accent-green);
+}
+
+@keyframes bounceIn {
+    0% {
+        opacity: 0;
+        transform: scale(0.3);
+    }
+    50% {
+        transform: scale(1.1);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
 }
