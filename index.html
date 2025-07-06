@@ -15,20 +15,20 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment-timezone/0.5.43/moment-timezone-with-data.min.js"></script>
     
     <!-- Local Styles -->
-    <link rel="stylesheet" href="css/styles.css?v=3.0">
-
+    <link rel="stylesheet" href="css/styles.css?v=2.0">
+       
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='0.9em' font-size='90'>📊</text></svg>">
 </head>
 <body>
     <div class="container">
         <header>
-            <h1>RBA Market Odds Dashboard</h1>
-            <p class="subtitle">Real-time market expectations for Reserve Bank of Australia rate decisions</p>
+            <h1>🥑 Avoconomics</h1>
+            <p class="subtitle">Waiting for the RBA to smash that cash (rate).</p>
         </header>
         
         <div class="countdown" id="countdown">
-            <h2>Next RBA Meeting</h2>
+            <h2>⏳ Time Until the RBA Wrecks or Rescues Brunch</h2>
             <div class="time-units" id="timer">
                 <div class="time-unit">
                     <div class="time-value">--</div>
@@ -51,14 +51,14 @@
         
         <div class="grid grid-2">
             <div class="card">
-                <h2><span class="icon">📊</span> Market Probabilities</h2>
+                <h2><span class="icon">📊</span> Odds on the Board (RBA's Next Move)</h2>
                 <div id="marketOdds">
                     <div class="loading">Loading market data...</div>
                 </div>
             </div>
             
             <div class="card">
-                <h2><span class="icon">📈</span> Last Rate Change</h2>
+                <h2><span class="icon">📋</span> Previous RBA Decisions</h2>
                 <div id="lastChange">
                     <div class="loading">Loading rate history...</div>
                 </div>
@@ -66,7 +66,7 @@
         </div>
         
         <div class="card">
-            <h2><span class="icon">📉</span> Cash Rate History (5 Years)</h2>
+            <h2><span class="icon">📉</span> The Rate Journey (Past 5 Years)</h2>
             <div class="chart-container">
                 <canvas id="rateChart"></canvas>
             </div>
@@ -74,8 +74,8 @@
         </div>
         
         <div class="card calculator-card">
-            <h2><span class="icon">🧮</span> Rate Cut Repayment Savings Calculator</h2>
-            <p class="calculator-subtitle">Calculate your potential mortgage savings and see how many avocado toasts you could afford! 🥑</p>
+            <h2><span class="icon">🧮</span> The Toast Budget Tool</h2>
+            <p class="calculator-subtitle">Calculate how much more avo toast you could afford with a cheeky rate cut 🥑</p>
             
             <div class="calculator-inputs">
                 <div class="input-group">
