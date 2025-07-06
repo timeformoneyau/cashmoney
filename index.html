@@ -146,6 +146,27 @@
             </div>
             <div id="chartStatus" class="loading">Loading historical data...</div>
         </div>
+        
+        <div class="card calculator-card">
+            <h2><span class="icon">🧮</span> Rate Cut Repayment Savings Calculator</h2>
+            <p class="calculator-subtitle">Calculate your potential mortgage savings and see how many avocado toasts you could afford! 🥑</p>
+            
+            <div class="calculator-inputs">
+                <div class="input-group">
+                    <label for="loanAmount">Loan Amount ($)</label>
+                    <input type="number" id="loanAmount" value="510000" min="0" step="10000">
+                </div>
+                <div class="input-group">
+                    <label for="interestRate">Current Interest Rate (%)</label>
+                    <input type="number" id="interestRate" value="6.10" min="0" max="20" step="0.05">
+                </div>
+                <button id="calculateBtn" class="calculate-btn">Calculate Savings</button>
+            </div>
+            
+            <div id="calculatorResults" class="calculator-results">
+                <!-- Results will be populated here -->
+            </div>
+        </div>
     </div>
     
     <footer>
