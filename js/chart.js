@@ -35,8 +35,8 @@ function createHistoricalChart(rateHistory) {
     
     // Create gradient
     const gradient = chartContext.createLinearGradient(0, 0, 0, 400);
-    gradient.addColorStop(0, 'rgba(59, 130, 246, 0.5)');
-    gradient.addColorStop(1, 'rgba(59, 130, 246, 0.0)');
+    gradient.addColorStop(0, 'rgba(37, 99, 235, 0.2)');
+    gradient.addColorStop(1, 'rgba(37, 99, 235, 0.0)');
     
     // Chart configuration with enhanced styling
     const config = {
@@ -46,20 +46,16 @@ function createHistoricalChart(rateHistory) {
             datasets: [{
                 label: 'Cash Rate (%)',
                 data: dataPoints.map(d => d.y),
-                borderColor: '#3b82f6',
+                borderColor: '#2563EB',
                 backgroundColor: gradient,
-                borderWidth: 4,
+                borderWidth: 3,
                 pointRadius: 0,
-                pointHoverRadius: 8,
-                pointHoverBackgroundColor: '#3b82f6',
+                pointHoverRadius: 6,
+                pointHoverBackgroundColor: '#2563EB',
                 pointHoverBorderColor: '#fff',
-                pointHoverBorderWidth: 3,
-                tension: 0.2,
-                fill: true,
-                shadowOffsetX: 0,
-                shadowOffsetY: 4,
-                shadowBlur: 10,
-                shadowColor: 'rgba(59, 130, 246, 0.3)'
+                pointHoverBorderWidth: 2,
+                tension: 0.3,
+                fill: true
             }]
         },
         options: {
@@ -74,28 +70,28 @@ function createHistoricalChart(rateHistory) {
                     display: true,
                     text: 'RBA Cash Rate – Past 5 Years',
                     font: {
-                        size: 18,
-                        weight: 'bold',
+                        size: 16,
+                        weight: '700',
                         family: 'Inter, sans-serif'
                     },
-                    color: '#0f172a',
+                    color: '#111827',
                     padding: {
-                        top: 10,
-                        bottom: 30
+                        top: 0,
+                        bottom: 20
                     }
                 },
                 legend: {
                     display: false
                 },
                 tooltip: {
-                    backgroundColor: 'rgba(15, 23, 42, 0.9)',
-                    titleColor: '#f1f5f9',
-                    bodyColor: '#cbd5e1',
-                    borderColor: '#334155',
+                    backgroundColor: 'rgba(255, 255, 255, 0.95)',
+                    titleColor: '#111827',
+                    bodyColor: '#374151',
+                    borderColor: '#E5E7EB',
                     borderWidth: 1,
                     padding: 12,
                     displayColors: false,
-                    cornerRadius: 8,
+                    cornerRadius: 6,
                     bodyFont: {
                         size: 14,
                         weight: '500'
@@ -116,13 +112,13 @@ function createHistoricalChart(rateHistory) {
             scales: {
                 x: {
                     grid: {
-                        color: 'rgba(148, 163, 184, 0.1)',
+                        color: 'rgba(229, 231, 235, 0.5)',
                         drawBorder: false
                     },
                     ticks: {
-                        color: '#64748b',
+                        color: '#6B7280',
                         font: {
-                            size: 12,
+                            size: 11,
                             weight: '500'
                         },
                         maxTicksLimit: 12,
@@ -145,13 +141,13 @@ function createHistoricalChart(rateHistory) {
                 },
                 y: {
                     grid: {
-                        color: 'rgba(148, 163, 184, 0.1)',
+                        color: 'rgba(229, 231, 235, 0.5)',
                         drawBorder: false
                     },
                     ticks: {
-                        color: '#64748b',
+                        color: '#6B7280',
                         font: {
-                            size: 12,
+                            size: 11,
                             weight: '500'
                         },
                         callback: function(value) {
@@ -173,19 +169,19 @@ function createHistoricalChart(rateHistory) {
                 type: 'point',
                 xValue: point.x,
                 yValue: point.y,
-                backgroundColor: '#3b82f6',
+                backgroundColor: '#2563EB',
                 borderColor: '#fff',
                 borderWidth: 2,
-                radius: 6,
+                radius: 5,
                 label: {
                     display: true,
                     content: `${point.y.toFixed(2)}%`,
                     position: 'top',
-                    backgroundColor: 'rgba(59, 130, 246, 0.9)',
+                    backgroundColor: '#2563EB',
                     color: '#fff',
                     font: {
                         size: 11,
-                        weight: 'bold'
+                        weight: '600'
                     },
                     padding: 4,
                     borderRadius: 4,
