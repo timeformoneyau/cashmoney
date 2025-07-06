@@ -2,6 +2,73 @@
 
 let rateChart = null;
 
+// Create or update the historical chart with enhanced styling
+function createHistoricalChart(rateHistory) {
+    const ctx = document.getElementById('rateChart');
+    if (!ctx) return;
+    
+    const chartContext = ctx.getContext('2d');
+    
+    // Hide loading message
+    const chartStatus = document.getElementById('chartStatus');
+    if (chartStatus) {
+        chartStatus.style.display = 'none';
+    }
+    
+    // Prepare data
+    let dataPoints = [];
+    
+    if (rateHistory && rateHistory.historical) {
+        dataPoints = rateHistory.historical.map(item => ({
+            x: item.date,
+            y: item.rate
+        }));
+    } else {
+        dataPoints = generateFallbackData();
+    }
+    
+    // Sort by date
+    dataPoints.sort((a, b) => a.x.localeCompare(b.x));
+    
+    // Find July data points for special labeling
+    const julyPoints = dataPoints.filter(point => point.x.includes('-07'));
+    
+    // Create gradient
+    const gradient = chartContext.createLinearGradient(0, 0, 0, 400);
+    gradient.addColorStop(0, 'rgba(59, 130, 246, 0.5)');
+    gradient.addColorStop(1, 'rgba(59, 130, 246, 0.0)');
+    
+    // Chart configuration with enhanced styling
+    const config = {
+        type: 'line',
+        data: {
+            labels: dataPoints.map(d => d.x),
+            datasets: [{
+                label: 'Cash Rate (%)',
+                data: dataPoints.map(d => d.y),
+                borderColor: '#3b82f6',
+                backgroundColor: gradient,
+                borderWidth: 4,
+                pointRadius: 0,
+                pointHoverRadius: 8,
+                pointHoverBackgroundColor: '#3b82f6',
+                pointHoverBorderColor: '#fff',
+                pointHoverBorderWidth: 3,
+                tension: 0.2,
+                fill: true,
+                shadowOffsetX: 0,
+                shadowOffsetY: 4,
+                shadowBlur: 10,
+                shadowColor: 'rgba(59, 130, 246, 0.3)'
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            interaction// Chart.js configuration and creation for RBA rate history
+
+let rateChart = null;
+
 // Chart configuration
 const chartConfig = {
     type: 'line',
