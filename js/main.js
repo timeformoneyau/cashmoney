@@ -145,13 +145,13 @@ function displayLastChange() {
         return;
     }
     
-    // Mock data for last 5 rate decisions (in production, this would come from data)
+    // Accurate RBA rate decisions
     const recentDecisions = [
         { date: 'May 2025', change: -0.25, rate: 3.85, type: 'cut' },
-        { date: 'April 2025', change: 0, rate: 4.10, type: 'hold' },
-        { date: 'March 2025', change: 0, rate: 4.10, type: 'hold' },
-        { date: 'February 2025', change: 0.25, rate: 4.10, type: 'hike' },
-        { date: 'November 2024', change: 0.25, rate: 3.85, type: 'hike' }
+        { date: 'February 2025', change: -0.25, rate: 4.10, type: 'cut' },
+        { date: 'December 2024', change: 0, rate: 4.35, type: 'hold' },
+        { date: 'November 2024', change: 0, rate: 4.35, type: 'hold' },
+        { date: 'September 2024', change: 0, rate: 4.35, type: 'hold' }
     ];
     
     let html = '<ul class="rate-history-list">';
