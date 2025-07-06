@@ -46,7 +46,7 @@ async function loadData() {
     }
 }
 
-// Display market odds
+// Display market odds with enhanced styling and sorting
 function displayMarketOdds() {
     const container = document.getElementById('marketOdds');
     
@@ -55,58 +55,49 @@ function displayMarketOdds() {
         return;
     }
     
-    // Add inline styles for probability bars
+    // Sort probabilities from most likely to least likely
+    const sortedProbabilities = [...state.marketData.probabilities].sort((a, b) => b.probability - a.probability);
+    
     let html = `
-        <style>
-            .prob-bar-container {
-                width: 100%;
-                height: 24px;
-                background: #334155;
-                border-radius: 12px;
-                overflow: hidden;
-                margin-top: 8px;
-            }
-            .prob-bar-fill {
-                height: 100%;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                color: white;
-                font-size: 0.85rem;
-                font-weight: 500;
-                transition: width 0.5s ease;
-            }
-            .prob-cell {
-                min-width: 250px;
-            }
-        </style>
         <table>
             <thead>
                 <tr>
-                    <th>Outcome</th>
+                    <th>Scenario</th>
                     <th>Probability</th>
-                    <th>Decimal Odds</th>
+                    <th>Odds</th>
                 </tr>
             </thead>
             <tbody>
     `;
     
-    state.marketData.probabilities.forEach(item => {
-        const odds = item.probability > 0 ? (100 / item.probability).toFixed(2) : '-';
+    sortedProbabilities.forEach((item, index) => {
+        // Format outcome label
+        let outcomeLabel = item.outcome;
+        if (item.outcome.includes('Hold')) {
+            outcomeLabel = `Hold (${item.rate}%)`;
+        } else if (item.outcome.includes('-0.25')) {
+            outcomeLabel = 'Reduce 0.25%';
+        } else if (item.outcome.includes('-0.50')) {
+            outcomeLabel = 'Reduce 0.50%';
+        }
+        
+        // Calculate fractional odds
+        const fractionalOdds = formatFractionalOdds(item.probability);
+        
+        // Determine bar color based on probability
         const barColor = getProbabilityColor(item.probability);
         
         html += `
-            <tr>
-                <td>${item.outcome}</td>
+            <tr class="animate-in" style="animation-delay: ${index * 100}ms">
+                <td><strong>${outcomeLabel}</strong></td>
                 <td class="prob-cell">
-                    <div style="font-weight: 600; font-size: 1.1rem; margin-bottom: 4px;">${item.probability}%</div>
                     <div class="prob-bar-container">
-                        <div class="prob-bar-fill" style="width: ${item.probability}%; background: ${barColor};">
-                            ${item.probability}%
+                        <div class="prob-bar-fill" style="width: ${Math.max(item.probability, 15)}%; background: ${barColor};">
+                            <span>${item.probability}%</span>
                         </div>
                     </div>
                 </td>
-                <td class="odds-value" style="font-size: 1.2rem; font-weight: 700; color: #60a5fa;">${odds}</td>
+                <td class="odds-value">${fractionalOdds}</td>
             </tr>
         `;
     });
@@ -114,7 +105,7 @@ function displayMarketOdds() {
     html += `
             </tbody>
         </table>
-        <div class="update-time" style="margin-top: 16px; text-align: right; color: #94a3b8; font-size: 0.9rem;">
+        <div class="update-time">
             Last updated: ${moment(state.marketData.lastUpdate).format('D MMM YYYY, h:mm A')}
         </div>
     `;
@@ -122,44 +113,70 @@ function displayMarketOdds() {
     container.innerHTML = html;
 }
 
+// Format odds as fractional
+function formatFractionalOdds(probability) {
+    if (probability === 0) return '—';
+    
+    const decimal = 100 / probability;
+    
+    if (decimal >= 2) {
+        // For odds 2.0 or greater, show as "X to 1"
+        const value = (decimal - 1).toFixed(1);
+        return `${value} to 1`;
+    } else {
+        // For odds less than 2.0, show as "1 to X"
+        const inverseValue = (1 / (decimal - 1)).toFixed(1);
+        return `1 to ${inverseValue}`;
+    }
+}
+
 // Helper function to get color based on probability
 function getProbabilityColor(probability) {
     if (probability >= 80) return 'linear-gradient(90deg, #10b981, #059669)';
-    if (probability >= 60) return 'linear-gradient(90deg, #60a5fa, #3b82f6)';
-    if (probability >= 40) return 'linear-gradient(90deg, #fbbf24, #f59e0b)';
-    if (probability >= 20) return 'linear-gradient(90deg, #f87171, #ef4444)';
+    if (probability >= 60) return 'linear-gradient(90deg, #3b82f6, #2563eb)';
+    if (probability >= 40) return 'linear-gradient(90deg, #f59e0b, #d97706)';
+    if (probability >= 20) return 'linear-gradient(90deg, #ef4444, #dc2626)';
     return 'linear-gradient(90deg, #94a3b8, #64748b)';
 }
 
-// Display last rate change
+// Display last 5 rate changes
 function displayLastChange() {
     const container = document.getElementById('lastChange');
     
-    if (!state.rateHistory || !state.rateHistory.lastChange) {
+    if (!state.rateHistory) {
         container.innerHTML = '<div class="error">No rate history available</div>';
         return;
     }
     
-    const change = state.rateHistory.lastChange;
-    const changeAmount = change.newRate - change.previousRate;
-    const isPositive = changeAmount > 0;
-    const basisPoints = Math.abs(changeAmount * 100).toFixed(0);
+    // Mock data for last 5 rate decisions (in production, this would come from data)
+    const recentDecisions = [
+        { date: 'May 2025', change: -0.25, rate: 3.85, type: 'cut' },
+        { date: 'April 2025', change: 0, rate: 4.10, type: 'hold' },
+        { date: 'March 2025', change: 0, rate: 4.10, type: 'hold' },
+        { date: 'February 2025', change: 0.25, rate: 4.10, type: 'hike' },
+        { date: 'November 2024', change: 0.25, rate: 3.85, type: 'hike' }
+    ];
     
-    container.innerHTML = `
-        <div class="last-change">
-            <div>
-                <div style="font-size: 0.9rem; color: #94a3b8; margin-bottom: 4px;">
-                    ${moment(change.date).format('D MMMM YYYY')}
+    let html = '<ul class="rate-history-list">';
+    
+    recentDecisions.forEach((decision, index) => {
+        const arrow = decision.type === 'cut' ? '↓' : decision.type === 'hike' ? '↑' : '→';
+        const changeText = decision.type === 'hold' ? 'Hold' : `${Math.abs(decision.change * 100)}bp ${decision.type}`;
+        
+        html += `
+            <li class="rate-history-item animate-in" style="animation-delay: ${index * 100}ms">
+                <div class="rate-details">
+                    <span class="rate-indicator ${decision.type}">${arrow}</span>
+                    <span class="rate-change">${changeText}</span>
+                    <span class="rate-date">— ${decision.date}</span>
                 </div>
-                <div style="color: #e2e8f0;">
-                    ${change.previousRate.toFixed(2)}% → ${change.newRate.toFixed(2)}%
-                </div>
-            </div>
-            <div class="change-amount ${isPositive ? 'positive' : 'negative'}">
-                ${isPositive ? '+' : '-'}${basisPoints}bps
-            </div>
-        </div>
-    `;
+                <span class="rate-value">(${decision.rate.toFixed(2)}%)</span>
+            </li>
+        `;
+    });
+    
+    html += '</ul>';
+    container.innerHTML = html;
 }
 
 // Update entire dashboard
