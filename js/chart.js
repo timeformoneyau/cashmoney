@@ -1,4 +1,39 @@
-// Chart.js configuration and creation for RBA rate history
+// Generate fallback data for demo purposes
+function generateFallbackData() {
+    // Accurate RBA historical rates
+    const historicalRates = [
+        // 2020
+        { date: '2020-01', rate: 0.75 },
+        { date: '2020-02', rate: 0.75 },
+        { date: '2020-03', rate: 0.50 },
+        { date: '2020-04', rate: 0.25 },
+        { date: '2020-05', rate: 0.25 },
+        { date: '2020-06', rate: 0.25 },
+        { date: '2020-07', rate: 0.25 },
+        { date: '2020-08', rate: 0.25 },
+        { date: '2020-09', rate: 0.25 },
+        { date: '2020-10', rate: 0.25 },
+        { date: '2020-11', rate: 0.10 },
+        { date: '2020-12', rate: 0.10 },
+        // 2021
+        { date: '2021-01', rate: 0.10 },
+        { date: '2021-02', rate: 0.10 },
+        { date: '2021-03', rate: 0.10 },
+        { date: '2021-04', rate: 0.10 },
+        { date: '2021-05', rate: 0.10 },
+        { date: '2021-06', rate: 0.10 },
+        { date: '2021-07', rate: 0.10 },
+        { date: '2021-08', rate: 0.10 },
+        { date: '2021-09', rate: 0.10 },
+        { date: '2021-10', rate: 0.10 },
+        { date: '2021-11', rate: 0.10 },
+        { date: '2021-12', rate: 0.10 },
+        // 2022
+        { date: '2022-01', rate: 0.10 },
+        { date: '2022-02', rate: 0.10 },
+        { date: '2022-03', rate: 0.10 },
+        { date: '2022-04', rate: 0.10 },
+        { date: '2// Chart.js configuration and creation for RBA rate history
 
 // Use window object to avoid redeclaration
 if (!window.rateChart) {
@@ -36,10 +71,11 @@ function createHistoricalChart(rateHistory) {
     // Find July data points for special labeling
     const julyPoints = dataPoints.filter(point => point.x.includes('-07'));
     
-    // Create gradient
+    // Create gradient with enhanced colors
     const gradient = chartContext.createLinearGradient(0, 0, 0, 400);
-    gradient.addColorStop(0, 'rgba(37, 99, 235, 0.2)');
-    gradient.addColorStop(1, 'rgba(37, 99, 235, 0.0)');
+    gradient.addColorStop(0, 'rgba(124, 144, 112, 0.3)');
+    gradient.addColorStop(0.5, 'rgba(139, 170, 98, 0.2)');
+    gradient.addColorStop(1, 'rgba(139, 170, 98, 0.0)');
     
     // Chart configuration with enhanced styling
     const config = {
@@ -49,14 +85,14 @@ function createHistoricalChart(rateHistory) {
             datasets: [{
                 label: 'Cash Rate (%)',
                 data: dataPoints.map(d => d.y),
-                borderColor: '#2563EB',
+                borderColor: '#7C9070',
                 backgroundColor: gradient,
                 borderWidth: 3,
                 pointRadius: 0,
-                pointHoverRadius: 6,
-                pointHoverBackgroundColor: '#2563EB',
+                pointHoverRadius: 8,
+                pointHoverBackgroundColor: '#7C9070',
                 pointHoverBorderColor: '#fff',
-                pointHoverBorderWidth: 2,
+                pointHoverBorderWidth: 3,
                 tension: 0.3,
                 fill: true
             }]
