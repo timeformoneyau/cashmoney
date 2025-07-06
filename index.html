@@ -17,6 +17,80 @@
     <!-- Local Styles -->
     <link rel="stylesheet" href="css/styles.css">
     
+    <!-- Fallback inline styles -->
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #0f172a;
+            color: #e2e8f0;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        header {
+            text-align: center;
+            padding: 30px;
+            background: #1e293b;
+            border-radius: 16px;
+            margin-bottom: 30px;
+        }
+        h1 {
+            font-size: 2.5rem;
+            background: linear-gradient(135deg, #60a5fa 0%, #a78bfa 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin: 0 0 10px 0;
+        }
+        .card {
+            background: #1e293b;
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 24px;
+            border: 1px solid #334155;
+        }
+        .countdown {
+            background: linear-gradient(135deg, #312e81 0%, #1e3a8a 100%);
+            padding: 32px;
+            border-radius: 16px;
+            text-align: center;
+            margin-bottom: 24px;
+        }
+        .time-units {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .time-unit {
+            background: rgba(255,255,255,0.1);
+            padding: 16px 24px;
+            border-radius: 12px;
+            text-align: center;
+        }
+        .time-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #fbbf24;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #334155;
+        }
+        th {
+            background: #0f172a;
+            font-weight: 600;
+        }
+    </style>
+    
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='0.9em' font-size='90'>📊</text></svg>">
 </head>
@@ -73,6 +147,10 @@
             <div id="chartStatus" class="loading">Loading historical data...</div>
         </div>
     </div>
+    
+    <footer>
+        <p>Built by <a href="https://github.com/michaelreardon" target="_blank">Michael Reardon</a> | Powered by live ASX data</p>
+    </footer>
     
     <!-- Local Scripts -->
     <script src="js/countdown.js"></script>
