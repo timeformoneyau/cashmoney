@@ -1,6 +1,9 @@
 // Chart.js configuration and creation for RBA rate history
 
-let rateChart = null;
+// Use window object to avoid redeclaration
+if (!window.rateChart) {
+    window.rateChart = null;
+}
 
 // Create or update the historical chart with enhanced styling
 function createHistoricalChart(rateHistory) {
@@ -192,12 +195,12 @@ function createHistoricalChart(rateHistory) {
     });
     
     // Create or update chart
-    if (rateChart) {
-        rateChart.data = config.data;
-        rateChart.options = config.options;
-        rateChart.update('none');
+    if (window.rateChart) {
+        window.rateChart.data = config.data;
+        window.rateChart.options = config.options;
+        window.rateChart.update('none');
     } else {
-        rateChart = new Chart(chartContext, config);
+        window.rateChart = new Chart(chartContext, config);
     }
 }// Chart.js configuration and creation for RBA rate history
 
@@ -395,9 +398,9 @@ function generateFallbackData() {
 
 // Destroy chart (for cleanup)
 function destroyChart() {
-    if (rateChart) {
-        rateChart.destroy();
-        rateChart = null;
+    if (window.rateChart) {
+        window.rateChart.destroy();
+        window.rateChart = null;
     }
 }
 
