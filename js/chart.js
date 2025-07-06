@@ -65,7 +65,145 @@ function createHistoricalChart(rateHistory) {
         options: {
             responsive: true,
             maintainAspectRatio: false,
-            interaction// Chart.js configuration and creation for RBA rate history
+            interaction: {
+                intersect: false,
+                mode: 'index'
+            },
+            plugins: {
+                title: {
+                    display: true,
+                    text: 'RBA Cash Rate – Past 5 Years',
+                    font: {
+                        size: 18,
+                        weight: 'bold',
+                        family: 'Inter, sans-serif'
+                    },
+                    color: '#0f172a',
+                    padding: {
+                        top: 10,
+                        bottom: 30
+                    }
+                },
+                legend: {
+                    display: false
+                },
+                tooltip: {
+                    backgroundColor: 'rgba(15, 23, 42, 0.9)',
+                    titleColor: '#f1f5f9',
+                    bodyColor: '#cbd5e1',
+                    borderColor: '#334155',
+                    borderWidth: 1,
+                    padding: 12,
+                    displayColors: false,
+                    cornerRadius: 8,
+                    bodyFont: {
+                        size: 14,
+                        weight: '500'
+                    },
+                    callbacks: {
+                        label: function(context) {
+                            return `Rate: ${context.parsed.y.toFixed(2)}%`;
+                        },
+                        title: function(tooltipItems) {
+                            return moment(tooltipItems[0].label, 'YYYY-MM').format('MMMM YYYY');
+                        }
+                    }
+                },
+                annotation: {
+                    annotations: {}
+                }
+            },
+            scales: {
+                x: {
+                    grid: {
+                        color: 'rgba(148, 163, 184, 0.1)',
+                        drawBorder: false
+                    },
+                    ticks: {
+                        color: '#64748b',
+                        font: {
+                            size: 12,
+                            weight: '500'
+                        },
+                        maxTicksLimit: 12,
+                        callback: function(value, index) {
+                            const label = this.getLabelForValue(value);
+                            const date = moment(label, 'YYYY-MM');
+                            
+                            // Show July labels
+                            if (date.month() === 6) { // July is month 6 (0-indexed)
+                                return date.format('MMM YYYY');
+                            }
+                            
+                            // Show every 6th month
+                            if (index % 6 === 0) {
+                                return date.format('MMM YYYY');
+                            }
+                            return '';
+                        }
+                    }
+                },
+                y: {
+                    grid: {
+                        color: 'rgba(148, 163, 184, 0.1)',
+                        drawBorder: false
+                    },
+                    ticks: {
+                        color: '#64748b',
+                        font: {
+                            size: 12,
+                            weight: '500'
+                        },
+                        callback: function(value) {
+                            return value.toFixed(2) + '%';
+                        }
+                    },
+                    suggestedMin: 0,
+                    suggestedMax: 5
+                }
+            }
+        }
+    };
+    
+    // Add July annotations
+    julyPoints.forEach(point => {
+        const date = moment(point.x, 'YYYY-MM');
+        if (date.year() >= 2021) {
+            config.options.plugins.annotation.annotations[`july${date.year()}`] = {
+                type: 'point',
+                xValue: point.x,
+                yValue: point.y,
+                backgroundColor: '#3b82f6',
+                borderColor: '#fff',
+                borderWidth: 2,
+                radius: 6,
+                label: {
+                    display: true,
+                    content: `${point.y.toFixed(2)}%`,
+                    position: 'top',
+                    backgroundColor: 'rgba(59, 130, 246, 0.9)',
+                    color: '#fff',
+                    font: {
+                        size: 11,
+                        weight: 'bold'
+                    },
+                    padding: 4,
+                    borderRadius: 4,
+                    yAdjust: -10
+                }
+            };
+        }
+    });
+    
+    // Create or update chart
+    if (rateChart) {
+        rateChart.data = config.data;
+        rateChart.options = config.options;
+        rateChart.update('none');
+    } else {
+        rateChart = new Chart(chartContext, config);
+    }
+}// Chart.js configuration and creation for RBA rate history
 
 let rateChart = null;
 
