@@ -130,13 +130,10 @@ function formatFractionalOdds(probability) {
     }
 }
 
-// Helper function to get color based on probability
+// Helper function to get color based on probability  
 function getProbabilityColor(probability) {
-    if (probability >= 80) return 'linear-gradient(90deg, #10b981, #059669)';
-    if (probability >= 60) return 'linear-gradient(90deg, #3b82f6, #2563eb)';
-    if (probability >= 40) return 'linear-gradient(90deg, #f59e0b, #d97706)';
-    if (probability >= 20) return 'linear-gradient(90deg, #ef4444, #dc2626)';
-    return 'linear-gradient(90deg, #94a3b8, #64748b)';
+    // Single blue color for all probability bars as per professional design
+    return '#3B82F6';
 }
 
 // Display last 5 rate changes
